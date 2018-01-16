@@ -1,5 +1,6 @@
 package com.vinson.netUtil;
 
+import org.junit.Test;
 import sun.misc.BASE64Decoder;
 
 import java.io.BufferedReader;
@@ -16,35 +17,25 @@ public class HttpRequest {
 
     public static void main(String[] args) {
 
-        String param = "eyJzZXJ2ZXJJZCI6IlNMSV9zb2NjZXJfZGV2XzEwMCIsInRlYW1JZCI6MTYxNjE2fQ==";
-        String result = sendPost("http://192.168.2.50:8083/activityC/updateSpringFire", "teamId=" + 123214
-                + "&name=" + param
-                + "&serverId=" + "jisdjf"
-                + "&friendIp=*"
-                + "&jsoncallback=?");
-        System.out.println(result + "-------------------");
-//        for(int i = 10000; i < 10300; i++){
-//            String teamId = "" + i;
-//            //http://192.168.2.50:8083/activityC/getSpringFire?teamId=131526&serverId=SLI_soccer_dev_100&jsoncallback=?
-//            String serverId = "SLI_soccer_dev_100";
-//
-//            String result = sendPost("http://192.168.2.50:8083/activityC/updateSpringFire", "teamId=" + teamId
-//                    + "&serverId=" + serverId
-//                    + "&friendIp=*"
-//                    + "&jsoncallback=?");
-//            System.out.println(result + "-------------------" + (i-10000));
-//        }
-
-        BASE64Decoder base64Decoder = new BASE64Decoder();
-        try {
-            byte[] bytes = base64Decoder.decodeBuffer(param);
-            String str = bytes.toString();
-            System.out.println(new String(bytes));
-            System.out.println(String.valueOf(bytes));
-        } catch (IOException e) {
-            e.printStackTrace();
+        for(int i = 0; i < 100; i++){
+            final int finalI = i;
+            Thread thread = new Thread(new Runnable() {
+                public void run() {
+//                    System.out.println("thread --- " + finalI);
+                    String result = sendGet("https://www.baidu.com/s", "wd=Java");
+                    System.out.println(result);
+                }
+            });
+            thread.start();
         }
     }
+
+    @Test
+    public void testGet(){
+        String result = sendGet("https://www.baidu.com/s", "wd=Java");
+        System.out.println(result);
+    }
+
 
     /**
      * 向指定URL发送GET方法的请求
